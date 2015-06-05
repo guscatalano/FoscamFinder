@@ -21,7 +21,7 @@ namespace FindFoscam
             {
                 try
                 {
-                    //This is the packet that discovers camerasw
+                    //This is the packet that discovers cameras
                     Byte[] buffer = null;//11
                     //4d:4f:5f:49:00:00:00:00:00:00:00:00:00:00:00:04:00:00:00:04:00:00:00:00:00:00:01
                     buffer = new byte[] { 
@@ -65,8 +65,10 @@ namespace FindFoscam
                     if (Camera.IsCameraPacket(receiveBytes))
                     {
                         Camera cam = new Camera(receiveBytes, recPoint);
-                        cam.PrintInfo();
-                        cameras.Add(cam);
+                        if (cameras.FirstOrDefault(x => x.ID == cam.ID) == null)
+                        {
+                            cameras.Add(cam);
+                        }
                     }
                     Thread.Sleep(1000);
                 }
@@ -89,12 +91,14 @@ namespace FindFoscam
             t2.Start();
             while (true)
             {
-               // Console.WriteLine("")
+                Console.WriteLine("Press ENTER to print current list");
+                Console.ReadLine();
+                Console.WriteLine("~~~~~~~~~~~~~~~~~~START~~~~~~~~~~~~~~~~~~~~~~~");
                 foreach (Camera cam in cameras)
                 {
                     cam.PrintInfo();
                 }
-                Thread.Sleep(5000);
+                Console.WriteLine("~~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~~~~~~~");
             }
             
             
