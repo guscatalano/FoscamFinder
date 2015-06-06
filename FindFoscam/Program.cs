@@ -97,6 +97,7 @@ namespace FindFoscam
                 foreach (Camera cam in cameras)
                 {
                     cam.PrintInfo();
+                    //cam.API.Login("test", "test");
                 }
                 Console.WriteLine("~~~~~~~~~~~~~~~~~~~END~~~~~~~~~~~~~~~~~~~~~~~~");
             }

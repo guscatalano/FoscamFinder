@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace FindFoscam
 {
-    class Camera
+    public class Camera
     {
         public bool Valid
         {
@@ -46,6 +48,12 @@ namespace FindFoscam
         }
 
         public IPAddress Gateway {
+            get;
+            internal set;
+        }
+
+        public ICameraAPI API
+        {
             get;
             internal set;
         }
@@ -169,6 +177,8 @@ namespace FindFoscam
                 Array.Copy(receiveBytes, currentIndex, dhcp, 0, 1);
                 DHCPEnabled = BitConverter.ToBoolean(dhcp, 0);
 
+
+                API = ICameraAPI.GetAPI(this);
             }
             catch (Exception e)
             {
@@ -177,6 +187,10 @@ namespace FindFoscam
             }
         
         }
+
+        
+
+       
 
         public void PrintInfo()
         {
@@ -191,6 +205,7 @@ namespace FindFoscam
             Console.WriteLine("App: " + AppVersion);
             Console.WriteLine("Port: " + Port);
             Console.WriteLine("DHCP: " + DHCPEnabled);
+            Console.WriteLine("API: " + API.GetAPIName());
             Console.WriteLine("Valid: " + Valid);
             if (!Valid)
             {
